@@ -45,78 +45,82 @@ public class CommandExecuter {
             String command = commandLine[0].trim().toUpperCase();
             String attributes = extractAttribute(1, commandLine);
 
-            Commands cd = Commands.valueOf(command);
-            switch (cd) {
-                case ADD:
-                    if (checkAttribute(attributes)) {
-                        taskManager.addTask(attributes);
-                        ConsoleColor.printGreen("Task added successfully");
-                        break;
-                    }
-                    break;
-                case UPDATE:
-                    if (checkAttribute(attributes)) {
-                        String[] attributeLine = attributes.split(" ");
-                        int pos = Integer.parseInt(attributeLine[0]);
-                        String textToUpdate = extractAttribute(1, attributeLine);
-                        try {
-                            taskManager.geTasks().get(pos);
-                        } catch (IndexOutOfBoundsException e) {
-                            ConsoleColor.printYellow("No Task at this position");
-                            taskManager.addTask(textToUpdate);
-                            ConsoleColor.printYellow("Task has added to the end of the list");
+            try {
+                Commands cd = Commands.valueOf(command);
+                switch (cd) {
+                    case ADD:
+                        if (checkAttribute(attributes)) {
+                            taskManager.addTask(attributes);
+                            ConsoleColor.printGreen("Task added successfully");
                             break;
                         }
-                        taskManager.updateTask(pos, textToUpdate);
-                        ConsoleColor.printGreen("Task updated successfully");
                         break;
-                    }
-                    break;
-                case DELETE:
-                    if (checkAttribute(attributes)) {
-                        String[] attributeLine = attributes.split(" ");
-                        int pos = Integer.parseInt(attributeLine[0].trim());
-                        taskManager.removeTask(pos);
-                        ConsoleColor.printGreen("Task deleted successfully");
-                    }
-                    break;
-                case MARK_DONE:
-                    if (checkAttribute(attributes)) {
-                        String[] attributeLine = attributes.split(" ");
-                        int pos = Integer.parseInt(attributeLine[0].trim());
-                        taskManager.markDone(pos);
-                        ConsoleColor.printGreen("Marked done !");
+                    case UPDATE:
+                        if (checkAttribute(attributes)) {
+                            String[] attributeLine = attributes.split(" ");
+                            int pos = Integer.parseInt(attributeLine[0]);
+                            String textToUpdate = extractAttribute(1, attributeLine);
+                            try {
+                                taskManager.geTasks().get(pos);
+                            } catch (IndexOutOfBoundsException e) {
+                                ConsoleColor.printYellow("No Task at this position");
+                                taskManager.addTask(textToUpdate);
+                                ConsoleColor.printYellow("Task has added to the end of the list");
+                                break;
+                            }
+                            taskManager.updateTask(pos, textToUpdate);
+                            ConsoleColor.printGreen("Task updated successfully");
+                            break;
+                        }
                         break;
-                    }
-                    break;
-                case MARK_IN_PROGRESS:
-                    if (checkAttribute(attributes)) {
-                        String[] attributeLine = attributes.split(" ");
-                        int pos = Integer.parseInt(attributeLine[0].trim());
-                        taskManager.markInProgress(pos);
-                        ConsoleColor.printGreen("Marked in progress !");
+                    case DELETE:
+                        if (checkAttribute(attributes)) {
+                            String[] attributeLine = attributes.split(" ");
+                            int pos = Integer.parseInt(attributeLine[0].trim());
+                            taskManager.removeTask(pos);
+                            ConsoleColor.printGreen("Task deleted successfully");
+                        }
                         break;
-                    }
-                    System.out.println("Mark In Progress");
-                    break;
-                case LIST_DONE:
-                    taskManager.listDoneTasks();
-                    break;
-                case LIST_IN_PROGRESS:
-                    taskManager.listInProgress();
-                    break;
-                case LIST_NOT_DONE:
-                    taskManager.listNotDone();
-                    break;
-                case LIST_ALL:
-                    taskManager.listAll();
-                    break;
-                case EXIT:
-                    running = false;
-                    System.out.println("Exiting the app...");
-                    break;
-                default:
-                    System.out.println("Invalid command");
+                    case MARK_DONE:
+                        if (checkAttribute(attributes)) {
+                            String[] attributeLine = attributes.split(" ");
+                            int pos = Integer.parseInt(attributeLine[0].trim());
+                            taskManager.markDone(pos);
+                            ConsoleColor.printGreen("Marked done !");
+                            break;
+                        }
+                        break;
+                    case MARK_IN_PROGRESS:
+                        if (checkAttribute(attributes)) {
+                            String[] attributeLine = attributes.split(" ");
+                            int pos = Integer.parseInt(attributeLine[0].trim());
+                            taskManager.markInProgress(pos);
+                            ConsoleColor.printGreen("Marked in progress !");
+                            break;
+                        }
+                        System.out.println("Mark In Progress");
+                        break;
+                    case LIST_DONE:
+                        taskManager.listDoneTasks();
+                        break;
+                    case LIST_IN_PROGRESS:
+                        taskManager.listInProgress();
+                        break;
+                    case LIST_NOT_DONE:
+                        taskManager.listNotDone();
+                        break;
+                    case LIST_ALL:
+                        taskManager.listAll();
+                        break;
+                    case EXIT:
+                        running = false;
+                        System.out.println("Exiting the app...");
+                        break;
+                    default:
+                        System.out.println("Invalid command");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("No command found");
             }
 
         }

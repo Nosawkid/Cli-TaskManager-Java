@@ -26,7 +26,11 @@ public class TaskManager {
     }
 
     public void removeTask(int n) {
-        tasks.remove(n);
+        try {
+            tasks.remove(n);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("No task found at this position");
+        }
     }
 
     public void updateTask(int pos, String taskName) {
@@ -36,15 +40,23 @@ public class TaskManager {
     }
 
     public void markDone(int pos) {
-        Task task = tasks.get(pos);
-        task.setTaskStatus(2);
-        tasks.set(pos, task);
+        try {
+            Task task = tasks.get(pos);
+            task.setTaskStatus(2);
+            tasks.set(pos, task);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("No task at this position");
+        }
     }
 
     public void markInProgress(int pos) {
-        Task task = tasks.get(pos);
-        task.setTaskStatus(1);
-        tasks.set(pos, task);
+        try {
+            Task task = tasks.get(pos);
+            task.setTaskStatus(1);
+            tasks.set(pos, task);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("No task at this position");
+        }
     }
 
     public void listDoneTasks() {
